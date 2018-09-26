@@ -42,22 +42,43 @@ def self_divide(num)
     true
 end
 
-p self_dividing_num(1,22)
+# p self_dividing_num(1,22)
 
 # input a 2d array
 # output the sum of the max increase
 # find the l/r max heights and then the t/b max heights
 # iterate through array and see if min btwn l/r max and t/b max is different 
 # if so sum difference between min and add to result
-def keep_skyline(grid)
-    top = Array.new(grid.length)
-    side = Array.new(grid[0].length)
+def keep_skyline(grid) 
+    top = []
+    side = []
     grid.length.times do |x|
-        curr = 0
-        grid[0].length.times do |y|
-            top.push(grid[y][x]) if (top[x] == nil)
-            side.push(grid[x][y]) if (side[y] == nil)
-            if 
+        rowMax = 0
+        colMax = 0
+        grid.length.times do |y|        
+            row = grid[x][y] 
+            col = grid[y][x]
+            rowMax = row if row > rowMax
+            colMax = col if col > colMax
+        end
+        top.push(colMax)
+        side.push(rowMax)
+    end
+    result = 0
+    grid.length.times do |i|
+        grid.length.times do |j|
+            el = grid[i][j]
+            min = [top[j], side[i]].min
+            result += (min - el) if el < min
         end
     end
+    result
 end
+
+grid = 
+[ [3, 0, 8, 4], 
+[2, 4, 5, 7],
+[9, 2, 6, 3],
+[0, 3, 1, 0] ]
+
+p keep_skyline(grid)
